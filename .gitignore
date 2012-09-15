@@ -1,0 +1,7 @@
+#ignore project files
+.project
+.pydevproject
+
+#ignore compiled Python files
+*.pyc
+
