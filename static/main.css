@@ -1,0 +1,56 @@
+@CHARSET "UTF-8";
+/* Navbar */
+#navbar ul {
+	list-style-output: none;
+	width: 80%;
+}
+
+#navbar li {
+   display: inline;
+}
+
+ #navbar a {
+    padding: 1px 5px;
+    color: black;
+    width: 15%;
+    font-family: Arial, Sans Serif;
+    font-size: 1em;
+    text-decoration: none;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;   
+}
+
+.input {
+    border: 1px solid #006;
+    background: #ffc;
+}
+.button {
+    border: 1px solid #006;
+    background: #9cf;
+}
+
+/* Main content */
+#maincontent p {
+	font: 0.9em Georgia, sans serif;
+	width: 80%;
+}
+
+/* Compare*/
+#original {
+	float:left;
+}
+#compare {
+	float:right;
+}
+
+/* Difference */
+#first {
+	font: 0.9em Arial, sans serif;
+	color: red;
+}
+
+#second {
+	font: 0.9em Arial, sans serif;
+	color: blue;
+}
