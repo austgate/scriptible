@@ -2,6 +2,8 @@ from flask import Flask, request, render_template, Markup
 
 import difftext, json
 
+from itertools import groupby
+
 app = Flask(__name__)
 
 @app.route("/")
@@ -24,15 +26,16 @@ def difference():
     if request.method == 'POST':
         #html, plan and forms - perhaps need to remove the plain at some point
         if request.headers['Content-Type'] == 'text/plain' or request.headers['Content-Type'] == 'application/html' or request.headers['Content-Type'] == 'application/x-www-form-urlencoded':
-            firsttxt = request.form['old'].split()
-            secondtxt = request.form['new'].split()
+          
+            firsttxt = request.form['old'].splitlines(True)
+            secondtxt = request.form['new'].splitlines(True)
             
             d = difftext.differenceText(firsttxt, secondtxt)
             diff = d.diff_text()
-            
+            print diff
             line = 1
             for ln in diff.split('\n'):
-
+               
                 if ln.startswith('-'):
                     out += Markup('<span id="first">'+ln[1:]+'</span>')
                 elif ln.startswith('+'):
@@ -40,7 +43,7 @@ def difference():
                 elif ln.startswith('?'):
                     pass
                 else:
-                    out +=ln
+                    out += Markup('<div class="unchanged">'+ln+'</div>')
 
             
             return render_template('difference.html', out=out)
