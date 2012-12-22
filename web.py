@@ -27,25 +27,30 @@ def difference():
         #html, plan and forms - perhaps need to remove the plain at some point
         if request.headers['Content-Type'] == 'text/plain' or request.headers['Content-Type'] == 'application/html' or request.headers['Content-Type'] == 'application/x-www-form-urlencoded':
           
-            firsttxt = request.form['old'].splitlines(True)
-            secondtxt = request.form['new'].splitlines(True)
-            
-            d = difftext.differenceText(firsttxt, secondtxt)
-            diff = d.diff_text()
-            print diff
-            line = 1
-            for ln in diff.split('\n'):
-               
-                if ln.startswith('-'):
-                    out += Markup('<span id="first">'+ln[1:]+'</span>')
-                elif ln.startswith('+'):
-                    out += Markup('<span id="second">'+ln[1:]+'</span>')
-                elif ln.startswith('?'):
-                    pass
-                else:
-                    out += Markup('<div class="unchanged">'+ln+'</div>')
+            firsttxt = request.form['old'].splitlines()
+            secondtxt = request.form['new'].splitlines()
 
-            
+            for i in range(len(firsttxt)):
+
+                d = difftext.differenceText(firsttxt[i], secondtxt[i])
+                diff = d.diff_text()
+
+                out += Markup('<p id= "'+ str(i) +'">')
+                #todo figure out how to mark up html with rdfa style tags for differencing
+                # tei as microtag!!!
+                for ln in diff.split('\n'):
+                       
+                    if ln.startswith('-'):
+                        out += Markup('<span id="first">'+ln[1:]+'</span>')
+                    elif ln.startswith('+'):
+                        out += Markup('<span id="second">'+ln[1:]+'</span>')
+                    elif ln.startswith('?'):
+                        pass
+                    else:
+                        #out += Markup('<div class="unchanged">'+ln+'</div>')
+                        out += ln
+        
+                out += Markup('</p>')
             return render_template('difference.html', out=out)
         elif request.headers['Content-Type'] == 'application/json':
             out = json.dumps({ "error": "Content-Type Not Supported Yet!" })
